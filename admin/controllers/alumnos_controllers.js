@@ -1,7 +1,7 @@
-// admin/controllers/alumnos_controllers.js
+// admin/controllers/carrer_controllers.js
 
 export function home(req, res) {
-    let students = [
+ let students = [
     {
       id: 1,
       nombre: "Juan",
@@ -38,10 +38,9 @@ export function home(req, res) {
       edad: 23
     }
   ];
-
-  return res.render('admin/alumnos', {
+  return res.render('admin/carrers', {
     title: 'Admin Site)',
-    alumnos: alumnos,
+    carrers: carrers,
     currentPage: 'home',
     description:
       'Esta es una aplicación de ejemplo creada con Node.js, Express y EJS.'

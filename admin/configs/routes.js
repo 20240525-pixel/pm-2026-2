@@ -24,6 +24,6 @@ router.delete('/api/v1/nations/:id', nationApis.deleteNation);
 router.get('/admin/carrers', carrers.home);
 
 // alumnos
-router.get('/examen/alumnos', alumnos.home);
+router.get('/examen/alumnos', carrers.home);
 
 export default router;

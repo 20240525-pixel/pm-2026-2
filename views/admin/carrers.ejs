@@ -9,7 +9,7 @@
     <i class="fa fa-book me-2"></i>
     Gestión Académica
   </a>
-  / Carreras
+  / Alumnos
 </h3>
 
 
@@ -20,12 +20,16 @@
   <!-- ========================= -->
   <div class="col-lg-4 col-md-5 mb-4">
 
+    <div class="alert d-none" role="alert" id="alertMessage">
+    A simple danger alert—check it out!
+    </div>
+
     <div class="card">
 
       <div class="card-header">
         <h6 class="mb-0" id="cardTitle">
           <i class="fa fa-plus me-2"></i>
-          Nueva Carrera
+          Nuevo Alumno
         </h6>
       </div>
 
@@ -39,14 +43,14 @@
               Nombre
             </label>
 
-            <input type="hidden" name="" id="carrerId">
+            <input type="hidden" name="" id="alumnoId">
 
             <input
               type="text"
               id="name"
               name="name"
               class="form-control"
-              placeholder="Ingrese el nombre de la carrera..."
+              placeholder="Ingrese el nombre..."
               required
             >
           </div>
@@ -54,7 +58,43 @@
           <div class="mb-3">
 
             <label for="name" class="form-label">
-              edad
+              Apellido
+            </label>
+
+            <input type="hidden" name="" id="apellidoId">
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Ingrese el apellido..."
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+
+            <label for="name" class="form-label">
+              Carrera
+            </label>
+
+            <input type="hidden" name="" id="carreraId">
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Ingrese la carrera..."
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+
+            <label for="name" class="form-label">
+              Edad
             </label>
 
             <input
@@ -62,7 +102,7 @@
               id="name"
               name="name"
               class="form-control"
-              placeholder="Ingrese el nombre de la carrera..."
+              placeholder="Ingrese la edad..."
               required
             >
 
@@ -110,7 +150,7 @@
       <div class="card-header">
         <h6 class="mb-0">
           <i class="fa fa-list me-2"></i>
-          Lista de Carreras
+          Lista de Alumnos
         </h6>
       </div>
 
@@ -122,7 +162,7 @@
 
           <div class="text-muted">
             <i class="fa fa-graduation-cap me-1"></i>
-            Carreras registradas
+            Alumnos registrados
           </div>
 
           <div>
@@ -147,6 +187,9 @@
               <tr>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Carrera</th>
+                <th>Edad</th>
                 <th class="text-end">Acciones</th>
               </tr>
             </thead>
@@ -165,7 +208,19 @@
                     </td>
 
                     <td>
-                      <%= carrer.name %>
+                      <%= carrer.nombre %>
+                    </td>
+
+                    <td>
+                      <%= carrer.apellido %>
+                    </td>
+
+                    <td>
+                      <%= carrer.carrera %>
+                    </td>
+
+                    <td>
+                      <%= carrer.edad %>
                     </td>
 
                     <td class="text-end">
@@ -223,31 +278,62 @@
 
     function limpiar(event){
       event.preventDefault();
-      document.getElementById("carrerId").value="";
-      document.getElementById("name").value="";
+      document.getElementById("alumnoId").value="";
+      document.getElementById("nombreId").value="";
       document.getElementById("cardTitle").innerHTML = "Nueva Carrera";
     }
 
     function agregar(event){
         event.preventDefault();
 
-        let name = document.getElementById("name").value;
+        let name = document.getElementById("alumnoId").value;
+        let apellido = document.getElementById("apellidoId").value;
+        let carrera = document.getElementById("carreraId").value;
+        let edad = document.getElementById("edadId").value;
         let carrersTable = document.getElementById("carrers");
         let carrerId = document.getElementById("carrerId").value;
+
+        if(name == "" || apellido == "" || carrera == "" || edad ==""){
+          alertMessage.classList.remove("d-none");
+          alertMessage.classList.add("alert-danger");
+          alertMessage.classList.remove("alert-success");
+          alertMessage.innerHTML = "Debe completar todos los campos";
+
+        }else{
+          alertMessage.classList.remove("d-none");
+          alertMessage.classList.remove("alert-danger");
+          alertMessage.classList.add("alert-success");
+          alertMessage.innerHTML = "Alumno registrado correctamente";
+      }
+    }
+
+        setInterval(() => {
+          alertMessage.classList.add("d-none");
+          }, 5000);
 
         if(carrerId==""){
           let tr = document.createElement("TR");
           let td1 = document.createElement("TD");
           let td2 = document.createElement("TD");
           let td3 = document.createElement("TD");
+          let td4 = document.createElement("TD");
+          let td5 = document.createElement("TD");
+          
 
           carrerRows = carrerRows + 1;
           td1.innerHTML = carrerRows;
           td2.innerHTML = name;
+          td3.innerHTML = apellido;
+          td4.innerHTML = carrera;
+          td5.innerHTML = edad;
+          
 
           tr.appendChild(td1);
           tr.appendChild(td2);
           tr.appendChild(td3);
+          tr.appendChild(td4);
+          tr.appendChild(td5);
+          
 
           console.log(tr);
 
@@ -262,12 +348,15 @@
             if(tr.children[0].innerHTML.trim() == carrerId){
               tr.children[1].innerHTML = name;
               document.getElementById("carrerId").value="";
-              document.getElementById("name").value="";
-              document.getElementById("cardTitle").innerHTML = "Nueva Carrera";
+              document.getElementById("alumnoId").value="";
+              document.getElementById("apellidoId").value="";
+              document.getElementById("carreraId").value="";
+              document.getElementById("edadId").value="";
+              document.getElementById("cardTitle").innerHTML = "Nuevo Alumno";
             }
           }
         }
-    }
+      
 
     function eliminar(id, event){
         let tr = event.currentTarget.parentElement.parentElement;
@@ -278,10 +367,13 @@
         let tr = event.currentTarget.parentElement.parentElement;
         let idRow = tr.children[0].innerHTML;
         let name = tr.children[1].innerHTML;
+        let apellido = tr.children[2].innerHTML;
+        let carrera = tr.children[3].innerHTML;
+        let edad = tr.children[4].innerHTML;
 
-        document.getElementById("cardTitle").innerHTML = "Editar Carrera";
+        document.getElementById("cardTitle").innerHTML = "Editar Alumno";
 
-        document.getElementById("name").value = name.trim();
+        document.getElementById("alumnoId").value = name.trim();
         document.getElementById("carrerId").value = id;
     }
 </script>
